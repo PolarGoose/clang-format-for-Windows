@@ -47,7 +47,7 @@ cmake `
   -DLLVM_TARGETS_TO_BUILD="AArch64" `
   -DLLVM_ENABLE_PROJECTS="clang" `
   -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded `
-  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_BUILD_TYPE=MinSizeRel
 CheckReturnCodeOfPreviousCommand "cmake generate cache failed"
 
 Info "Cmake build"
