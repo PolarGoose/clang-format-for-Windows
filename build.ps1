@@ -34,14 +34,14 @@ Remove-Item $buildDir -Force -Recurse -ErrorAction SilentlyContinue
 New-Item $buildDir -Force -ItemType "directory" > $null
 
 Info "Download llvm source code"
-Invoke-WebRequest -Uri https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-18.1.6.zip -OutFile $buildDir/llvm.zip
+Invoke-WebRequest -Uri https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-19.1.0.zip -OutFile $buildDir/llvm.zip
 
 Info "Extract the source code"
 [System.IO.Compression.ZipFile]::ExtractToDirectory("$buildDir/llvm.zip", "$buildDir")
 
 Info "Cmake generate cache"
 cmake `
-  -S $buildDir/llvm-project-llvmorg-18.1.6/llvm `
+  -S $buildDir/llvm-project-llvmorg-19.1.0/llvm `
   -B $buildDir/out `
   -G "Ninja" `
   -DLLVM_TARGETS_TO_BUILD="AArch64" `
