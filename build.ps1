@@ -31,7 +31,7 @@ Remove-Item $buildDir -Force -Recurse -ErrorAction SilentlyContinue
 New-Item $buildDir -Force -ItemType "directory" > $null
 
 Info "Download llvm source code"
-Invoke-WebRequest -Uri https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-19.1.7.zip -OutFile $buildDir/llvm.zip
+Invoke-WebRequest -Uri https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-21.1.0.zip -OutFile $buildDir/llvm.zip
 
 Info "Extract the source code"
 [System.IO.Compression.ZipFile]::ExtractToDirectory("$buildDir/llvm.zip", "$buildDir")
@@ -41,7 +41,7 @@ Info "Open Visual Studio 2022 Developer PowerShell"
 
 Info "Cmake generate cache"
 cmake `
-  -S $buildDir/llvm-project-llvmorg-19.1.7/llvm `
+  -S $buildDir/llvm-project-llvmorg-21.1.0/llvm `
   -B $buildDir/out `
   -G "Ninja" `
   -D LLVM_TARGETS_TO_BUILD="AArch64" `
