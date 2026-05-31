@@ -2,16 +2,16 @@ on: push
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-2025-VS2026
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: ./build.ps1
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
         with:
           draft: true
           files: build/publish/*.zip
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Build artifacts
           path: build/publish/*.zip

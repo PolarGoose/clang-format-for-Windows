@@ -17,7 +17,6 @@ Function CheckReturnCodeOfPreviousCommand($msg) {
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
-Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 $root = Resolve-Path "$PSScriptRoot"
 $buildDir = "$root/build"
@@ -30,24 +29,23 @@ Info "Remove '$buildDir' folder if it exists"
 Remove-Item $buildDir -Force -Recurse -ErrorAction SilentlyContinue
 New-Item $buildDir -Force -ItemType "directory" > $null
 
-Info "Download llvm source code"
-Invoke-WebRequest -Uri https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-21.1.0.zip -OutFile $buildDir/llvm.zip
+Info "Clone llvm source code"
+git clone --depth 1 --branch llvmorg-22.1.6 https://github.com/llvm/llvm-project.git $buildDir
+CheckReturnCodeOfPreviousCommand "git clone failed"
 
-Info "Extract the source code"
-[System.IO.Compression.ZipFile]::ExtractToDirectory("$buildDir/llvm.zip", "$buildDir")
-
-Info "Open Visual Studio 2022 Developer PowerShell"
-& "$installationPath\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64
+Info "Open Visual Studio Developer PowerShell"
+& "$installationPath\Common7\Tools\Launch-VsDevShell.ps1" -SkipAutomaticLocation -Arch amd64
 
 Info "Cmake generate cache"
 cmake `
-  -S $buildDir/llvm-project-llvmorg-21.1.0/llvm `
+  -S $buildDir/llvm `
   -B $buildDir/out `
   -G "Ninja" `
   -D LLVM_TARGETS_TO_BUILD="AArch64" `
   -D LLVM_ENABLE_PROJECTS="clang" `
   -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded `
   -D CMAKE_ASM_MASM_FLAGS="/nologo" `
+  -D CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE=ON `
   -D CMAKE_BUILD_TYPE=Release
 CheckReturnCodeOfPreviousCommand "cmake generate cache failed"
 
