@@ -2,9 +2,9 @@ on: push
 
 jobs:
   build:
-    runs-on: windows-2025-VS2026
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: ./build.ps1
       - uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
