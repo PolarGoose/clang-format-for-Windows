@@ -30,7 +30,7 @@ Remove-Item $buildDir -Force -Recurse -ErrorAction SilentlyContinue
 New-Item $buildDir -Force -ItemType "directory" > $null
 
 Info "Clone llvm source code"
-git clone --depth 1 --branch llvmorg-22.1.6 https://github.com/llvm/llvm-project.git $buildDir
+git clone --depth 1 --branch llvmorg-23.1.3 https://github.com/llvm/llvm-project.git $buildDir
 CheckReturnCodeOfPreviousCommand "git clone failed"
 
 Info "Open Visual Studio Developer PowerShell"
